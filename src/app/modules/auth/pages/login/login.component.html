@@ -1,0 +1,22 @@
+<app-auth-container
+  fxLayout="column"
+  fxFlex="1 0 0"
+  fxLayoutAlign="center center"
+  title="Login"
+>
+  <form autocomplete="off">
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput required autocomplete="_">
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput required autocomplete="_">
+      </mat-form-field>
+    </div>
+    <button type="submit" mat-raised-button color="primary">Login</button>
+  </form>
+</app-auth-container>
