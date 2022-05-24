@@ -7,12 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { LayoutComponent } from './layout/layout.component';
 import { IndexComponent } from './pages/index/index.component';
+import { HeaderComponent } from './layout/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
-    IndexComponent
+    IndexComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
