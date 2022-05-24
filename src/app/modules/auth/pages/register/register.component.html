@@ -2,9 +2,15 @@
   fxLayout="column"
   fxFlex="1 0 0"
   fxLayoutAlign="center center"
-  title="Login"
+  title="Register"
 >
   <form>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input type="Text" matInput required>
+      </mat-form-field>
+    </div>
     <div fxLayout="row">
       <mat-form-field fxFlex="1 0 0" appearance="outline">
         <mat-label>Email</mat-label>
@@ -14,6 +20,12 @@
     <div fxLayout="row">
       <mat-form-field fxFlex="1 0 0" appearance="outline">
         <mat-label>Password</mat-label>
+        <input type="password" matInput required>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Confirm Password</mat-label>
         <input type="password" matInput required>
       </mat-form-field>
     </div>
