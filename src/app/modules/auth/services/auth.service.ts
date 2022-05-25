@@ -6,6 +6,7 @@ import { LocalStorageService } from 'src/app/core/services/local-storage.service
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
 import { RegistrationRequest } from '../models/RegistrationRequest';
+import { TokenResponse } from '../models/TokenResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -76,5 +77,9 @@ export class AuthService {
     this.tokenSubject$.next(null);
     this.refreshTokenSubject$.next(null);
     this.userSubject$.next(null);
+  }
+
+  refreshToken(token: string): Observable<TokenResponse> {
+    return this.http.post<TokenResponse>('v1/refresh-token', { token });
   }
 }

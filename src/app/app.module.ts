@@ -8,7 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { IndexComponent } from './pages/index/index.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RequestInterceptor } from './interceptors/request.interceptor';
+import { RequestInterceptor } from './core/interceptors/request.interceptor';
 
 @NgModule({
   declarations: [
