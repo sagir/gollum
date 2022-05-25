@@ -1,1 +1,13 @@
-<p>profile-container works!</p>
+<nav
+  mat-tab-nav-bar
+  backgroundColor="warn"
+  [tabPanel]="tabPanel"
+  style="margin: 16px 0;"
+>
+  <a mat-tab-link routerLink="my-surveys" routerLinkActive="mat-accent">My Surveys</a>
+  <a mat-tab-link routerLink="create-survey" routerLinkActive="mat-accent">Create Survey</a>
+  <a mat-tab-link routerLink="taken-surveys" routerLinkActive="mat-accent">Taken Surveys</a>
+</nav>
+<mat-tab-nav-panel #tabPanel>
+  <router-outlet></router-outlet>
+</mat-tab-nav-panel>
