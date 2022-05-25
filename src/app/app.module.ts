@@ -9,6 +9,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './core/interceptors/request.interceptor';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,11 @@ import { RequestInterceptor } from './core/interceptors/request.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
       multi: true
     }
   ],
