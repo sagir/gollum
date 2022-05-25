@@ -2,6 +2,6 @@ import { User } from "../../../core/models/User";
 
 export interface LoginResponse {
   token: string;
-  refresh_token: string;
+  refreshToken: string;
   user: User;
 }

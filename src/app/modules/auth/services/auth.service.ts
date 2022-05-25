@@ -58,13 +58,23 @@ export class AuthService {
     }
   }
 
-  storeLoginResponse({ user, token, refresh_token }: LoginResponse): void {
+  storeLoginResponse({ user, token, refreshToken }: LoginResponse): void {
     this.storageService.setItem('_token', token);
-    this.storageService.setItem('_refreshToken', refresh_token);
+    this.storageService.setItem('_refreshToken', refreshToken);
     this.storageService.setItem('_user', user);
 
     this.tokenSubject$.next(token);
-    this.refreshTokenSubject$.next(refresh_token);
+    this.refreshTokenSubject$.next(refreshToken);
     this.userSubject$.next(user);
+  }
+
+  logout(): void {
+    this.storageService.removeItem('_token');
+    this.storageService.removeItem('_refreshToken');
+    this.storageService.removeItem('_user');
+
+    this.tokenSubject$.next(null);
+    this.refreshTokenSubject$.next(null);
+    this.userSubject$.next(null);
   }
 }
