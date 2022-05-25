@@ -5,6 +5,7 @@ import { User } from 'src/app/core/models/User';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';
+import { RegistrationRequest } from '../models/RegistrationRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,17 @@ export class AuthService {
 
   async login(data: LoginRequest): Promise<boolean> {
     try {
-      const res = await lastValueFrom(this.http.post<LoginResponse>('v1/login', data));
+      const res = await lastValueFrom(this.http.post<LoginResponse>('v1/auth/login', data));
+      this.storeLoginResponse(res);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async register(data: RegistrationRequest): Promise<boolean> {
+    try {
+      const res = await lastValueFrom(this.http.post<LoginResponse>('v1/auth/register', data));
       this.storeLoginResponse(res);
       return true;
     } catch (error) {

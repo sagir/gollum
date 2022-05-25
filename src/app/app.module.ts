@@ -25,7 +25,8 @@ import { RequestInterceptor } from './interceptors/request.interceptor';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: RequestInterceptor
+      useClass: RequestInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
