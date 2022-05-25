@@ -1,0 +1,54 @@
+<app-auth-container
+  fxLayout="column"
+  fxFlex="1 0 0"
+  fxLayoutAlign="center center"
+  title="Register"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input type="Text" matInput required formControlName="name">
+        <mat-error *ngIf="form.controls['name'].invalid">
+          <ng-container *ngIf="form.controls['name'].errors?.['required']">Name is required</ng-container>
+          <ng-container *ngIf="form.controls['name'].errors?.['minlength']">Name should have minimum 3 characters</ng-container>
+          <ng-container *ngIf="form.controls['name'].errors?.['maxlength']">Name should have minimum 255 characters</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput required formControlName="email">
+        <mat-error *ngIf="form.controls['email'].invalid">
+          <ng-container *ngIf="form.controls['email'].errors?.['required']">Email is required</ng-container>
+          <ng-container *ngIf="form.controls['email'].errors?.['email']">Email is not valid</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput required formControlName="password">
+        <mat-error *ngIf="form.controls['password'].invalid">
+          <ng-container *ngIf="form.controls['password'].errors?.['required']">Password is required</ng-container>
+          <ng-container *ngIf="form.controls['password'].errors?.['minlength']">Password must have minimum 6 characters</ng-container>
+          <ng-container *ngIf="form.controls['password'].errors?.['maxlength']">Password must have maximum 16 characters</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input type="password" matInput required formControlName="password_confirmation">
+        <mat-error *ngIf="form.controls['password_confirmation'].invalid">
+          <ng-container *ngIf="form.controls['password_confirmation'].errors?.['required']">Password confirmation is required</ng-container>
+          <ng-container *ngIf="form.controls['password_confirmation'].errors?.['minlength']">Password confirmation must have minimum 6 characters</ng-container>
+          <ng-container *ngIf="form.controls['password_confirmation'].errors?.['maxlength']">Password confirmation must have maximum 16 characters</ng-container>
+          <ng-container *ngIf="form.controls['password_confirmation'].errors?.['confirmation']">Passwords didn't match</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button type="submit" mat-raised-button color="primary">Register</button>
+  </form>
+</app-auth-container>

@@ -6,8 +6,13 @@
     <div class="nav-bar" fxLayout="row" fxLayoutAlign="flex-end">
       <a routerLink="/" mat-button>Home</a>
       <a routerLink="/surveys" mat-button>Surveys</a>
-      <a routerLink="/auth/login" mat-button>Login</a>
-      <a routerLink="/auth/register" mat-button>Register</a>
+      <ng-container *ngIf="userObservable$ | async as user; else notLoggedIn">
+        <button type="button" mat-button (click)="logout()">Logout</button>
+      </ng-container>
+      <ng-template #notLoggedIn>
+        <a routerLink="/auth/login" mat-button>Login</a>
+        <a routerLink="/auth/register" mat-button>Register</a>
+      </ng-template>
     </div>
   </div>
 </mat-toolbar>

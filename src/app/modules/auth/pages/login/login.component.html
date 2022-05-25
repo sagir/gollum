@@ -1,0 +1,31 @@
+<app-auth-container
+  fxLayout="column"
+  fxFlex="1 0 0"
+  fxLayoutAlign="center center"
+  title="Login"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" style="margin-bottom: 10px;">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput required formControlName="email">
+        <mat-error *ngIf="form.controls['email'].invalid">
+          <ng-container *ngIf="form.controls['email'].errors?.['required']">Email is required</ng-container>
+          <ng-container *ngIf="form.controls['email'].errors?.['email']">Email is not valid</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" style="margin-bottom: 10px;">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input type="password" matInput required formControlName="password">
+        <mat-error *ngIf="form.controls['password'].invalid">
+          <ng-container *ngIf="form.controls['password'].errors?.['required']">Password is required</ng-container>
+          <ng-container *ngIf="form.controls['password'].errors?.['minlength']">Password must have minimum 6 characters</ng-container>
+          <ng-container *ngIf="form.controls['password'].errors?.['maxlength']">Password must have maximum 16 characters</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button type="submit" mat-raised-button color="primary">Login</button>
+  </form>
+</app-auth-container>

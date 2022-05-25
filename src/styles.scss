@@ -1,7 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: #dfdfdf;
+  color: #424242;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
 
 .container {
   margin: 0 auto;
@@ -19,4 +27,18 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
   @media (min-width: 1280px) {
     max-width: 1200px;
   }
+}
+
+.mat-card {
+  background-color: white;
+  color: #424242;
+}
+
+.mat-form-field-label {
+  color: #424242;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #7b1fa2;
+  opacity: .75;
 }
