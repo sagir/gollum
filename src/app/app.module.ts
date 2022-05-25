@@ -7,6 +7,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { IndexComponent } from './pages/index/index.component';
 import { HeaderComponent } from './layout/header/header.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RequestInterceptor } from './interceptors/request.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,12 @@ import { HeaderComponent } from './layout/header/header.component';
     BrowserAnimationsModule,
     SharedModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
