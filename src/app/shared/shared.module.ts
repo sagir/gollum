@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
 
 const Modules = [
   CommonModule,
@@ -23,6 +24,7 @@ const Modules = [
   HttpClientModule,
   MatSnackBarModule,
   MatTabsModule,
+  MatTableModule
 ];
 
 @NgModule({
