@@ -7,7 +7,6 @@ import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
 import { SurveyStatuses } from 'src/app/modules/surveys/enums/SurveyStatuses';
 import { SurveySortOptions } from 'src/app/modules/surveys/enums/SurveySortOptions';
 import { SurveyListItem } from './../../../surveys/models/SurveyListItem';
-import { PaginatedResponse } from './../../../../core/models/PaginatedResponse';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginatorData } from 'src/app/core/models/PaginatorData';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -59,7 +58,7 @@ export class MySurveysComponent implements OnInit, OnDestroy {
         page: Number(queryParamMap.get('page') || 0) || 1,
         perPage: Number(queryParamMap.get('perPage') || 10) || 10,
         search: queryParamMap.get('search') || '',
-        status: (queryParamMap.get('status') || SurveyStatuses.All) as SurveyStatuses,
+        status: (queryParamMap.get('status') || 'all') as SurveyStatuses,
         sortBy: (queryParamMap.get('sortBy') || SurveySortOptions.Latest) as SurveySortOptions,
         user: this.userId
       });

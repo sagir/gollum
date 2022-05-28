@@ -7,6 +7,6 @@ export interface SurveyListRequest {
   perPage: number;
   search: string;
   sortBy: SurveySortOptions;
-  status: SurveyStatuses;
+  status: SurveyStatuses | null;
   user?: number;
 }
