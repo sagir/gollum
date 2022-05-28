@@ -4,14 +4,15 @@
       <a routerLink="/">Gollum</a>
     </div>
     <div class="nav-bar" fxLayout="row" fxLayoutAlign="flex-end">
-      <a routerLink="/" mat-button>Home</a>
-      <a routerLink="/surveys" mat-button>Surveys</a>
+      <a routerLink="/" mat-button routerLinkActive="mat-accent" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/surveys" mat-button routerLinkActive="mat-accent">Surveys</a>
       <ng-container *ngIf="userObservable$ | async as user; else notLoggedIn">
+        <a routerLink="/profile" mat-button routerLinkActive="mat-accent">My Profile</a>
         <button type="button" mat-button (click)="logout()">Logout</button>
       </ng-container>
       <ng-template #notLoggedIn>
-        <a routerLink="/auth/login" mat-button>Login</a>
-        <a routerLink="/auth/register" mat-button>Register</a>
+        <a routerLink="/auth/login" mat-button routerLinkActive="mat-accent">Login</a>
+        <a routerLink="/auth/register" mat-button routerLinkActive="mat-accent">Register</a>
       </ng-template>
     </div>
   </div>

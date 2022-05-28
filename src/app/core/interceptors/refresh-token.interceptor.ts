@@ -16,7 +16,7 @@ import {
 } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
-import { User } from '../models/User';
+import { User } from '../../modules/auth/models/User';
 import { TokenResponse } from './../../modules/auth/models/TokenResponse';
 
 @Injectable()
