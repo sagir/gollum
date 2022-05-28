@@ -1,3 +1,5 @@
+import { SurveyStatuses } from "../enums/SurveyStatuses";
+
 export interface Survey {
   id: number;
   title: string;
@@ -6,4 +8,5 @@ export interface Survey {
   publish_at: string;
   created_at: string;
   updated_at: string;
+  status: SurveyStatuses;
 }

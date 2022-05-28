@@ -4,6 +4,7 @@ import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-survey',
@@ -11,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./edit-survey.component.scss']
 })
 export class EditSurveyComponent implements OnInit {
+  form!: FormGroup;
   survey!: SurveyDetails;
 
   constructor(
@@ -20,8 +22,9 @@ export class EditSurveyComponent implements OnInit {
     private surveyService: SurveyService
   ) { }
 
-  ngOnInit(): void {
-    this.loadSurvey();
+  async ngOnInit(): Promise<void> {
+    await this.loadSurvey();
+    this.form = this.surveyService.createSurveyForm(this.survey);
   }
 
   private async loadSurvey(): Promise<void> {
@@ -34,6 +37,10 @@ export class EditSurveyComponent implements OnInit {
     } finally {
       this.spinner.hide('global');
     }
+  }
+
+  async onSubmit(): Promise<void> {
+
   }
 
 }
