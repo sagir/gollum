@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
-      this.snackBar.open('Invalid data.', 'Close');
+      this.snackBar.open('Invalid data.', 'Close', { duration: 3000 });
       return;
     }
 
@@ -83,10 +83,10 @@ export class RegisterComponent implements OnInit {
     this.spinner.hide('global');
 
     if (res) {
-      this.snackBar.open('Registration successfull.', 'Close');
+      this.snackBar.open('Registration successfull.', 'Close', { duration: 3000 });
       this.router.navigateByUrl('/');
     } else {
-      this.snackBar.open('Registration failed.', 'Close');
+      this.snackBar.open('Registration failed.', 'Close', { duration: 3000 });
     }
   }
 }

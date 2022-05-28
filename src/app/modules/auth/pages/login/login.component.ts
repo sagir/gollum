@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
-      this.snackBar.open('Invalid data', 'Close');
+      this.snackBar.open('Invalid data', 'Close', { duration: 3000 });
       return;
     }
 
@@ -51,11 +51,11 @@ export class LoginComponent implements OnInit {
     this.spinner.hide('global');
 
     if (!res) {
-      this.snackBar.open('Username or password didn\'t match.');
+      this.snackBar.open('Username or password didn\'t match.', 'Close', { duration: 3000 });
       return;
     }
 
-    this.snackBar.open('Login successfull.', 'Close');
+    this.snackBar.open('Login successfull.', 'Close', { duration: 3000 });
     this.router.navigateByUrl('/');
   }
 }
