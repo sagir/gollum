@@ -64,7 +64,7 @@ export class SurveyFilterComponent implements OnInit, OnDestroy {
     const queryParamMap = this.route.snapshot.queryParamMap;
 
     this.form = this.fb.group({
-      search: queryParamMap.get('search'),
+      search: queryParamMap.get('search') || null,
       sortBy: queryParamMap.get('sortBy') || SurveySortOptions.Latest,
       status: queryParamMap.get('status') || SurveyStatuses.All,
     });
