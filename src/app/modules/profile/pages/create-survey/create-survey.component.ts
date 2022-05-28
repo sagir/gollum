@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateSurveyRequest } from 'src/app/modules/surveys/models/CreateSurveyRequest';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
@@ -14,35 +14,13 @@ export class CreateSurveyComponent implements OnInit {
   form!: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private surveyService: SurveyService,
     private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
-  }
-
-  private createForm(): void {
-    this.form = this.fb.group({
-      title: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(255),
-        ],
-      ],
-      description: [
-        null,
-        [Validators.minLength(10), Validators.maxLength(2000)],
-      ],
-      timeLimit: [
-        null,
-        [Validators.required, Validators.min(1), Validators.max(120)],
-      ],
-    });
+    this.form = this.surveyService.createSurveyForm()
   }
 
   async onSubmit(): Promise<void> {

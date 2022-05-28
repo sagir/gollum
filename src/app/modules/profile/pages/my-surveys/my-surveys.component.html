@@ -40,14 +40,14 @@
         Actions
       </th>
       <td mat-cell *matCellDef="let survey" style="text-align: center">
-        <button
-          type="button"
+        <a
+          routerLink="/profile/edit-survey/{{ survey.id }}"
           mat-raised-button
           color="primary"
           *ngIf="survey.status === 'unpublished'"
         >
           Edit
-        </button>
+        </a>
         &nbsp;&nbsp;
         <button
           type="button"
