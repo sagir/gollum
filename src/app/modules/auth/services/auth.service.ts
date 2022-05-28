@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { User } from 'src/app/core/models/User';
+import { User } from 'src/app/modules/auth/models/User';
 import { LocalStorageService } from 'src/app/core/services/local-storage.service';
 import { LoginRequest } from '../models/LoginRequest';
 import { LoginResponse } from '../models/LoginResponse';

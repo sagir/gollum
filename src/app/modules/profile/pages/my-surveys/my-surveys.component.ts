@@ -1,15 +1,81 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
+import { SurveyStatuses } from 'src/app/modules/surveys/enums/SurveyStatuses';
+import { SurveySortOptions } from 'src/app/modules/surveys/enums/SurveySortOptions';
+import { SurveyListItem } from './../../../surveys/models/SurveyListItem';
+import { PaginatedResponse } from './../../../../core/models/PaginatedResponse';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-my-surveys',
   templateUrl: './my-surveys.component.html',
-  styleUrls: ['./my-surveys.component.scss']
+  styleUrls: ['./my-surveys.component.scss'],
 })
-export class MySurveysComponent implements OnInit {
+export class MySurveysComponent implements OnInit, OnDestroy {
+  private readonly ngUnsubscribe$ = new Subject<void>();
+  private userId?: number;
 
-  constructor() { }
+  surveysPaginatedData?: PaginatedResponse<SurveyListItem>;
+  displayColumns = ['title', 'questions', 'time_limit', 'created_at', 'publish_at', 'actions'];
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private surveyService: SurveyService
+  ) {}
 
   ngOnInit(): void {
+    this.authService.userObservable$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((user) => (this.userId = user?.id));
+
+    this.route.queryParams.subscribe((params) => {
+      this.loadMySurveys(params);
+    });
   }
 
+  private async loadMySurveys(params: Params): Promise<void> {
+    if (!this.userId) {
+      this.snackBar.open('Unable to load user surveys', 'Close', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    try {
+      const queryParamMap = this.route.snapshot.queryParamMap;
+      this.surveysPaginatedData = await this.surveyService.getSurveys({
+        page: Number(queryParamMap.get('page') || 0) || 1,
+        perPage: Number(queryParamMap.get('perPage') || 10) || 10,
+        search: queryParamMap.get('search') || '',
+        status: (queryParamMap.get('status') || SurveyStatuses.All) as SurveyStatuses,
+        sortBy: (queryParamMap.get('sortBy') || SurveySortOptions.Latest) as SurveySortOptions,
+        user: this.userId
+      });
+    } catch (error) {
+      this.snackBar.open('Somehting went wrong. Please try again', 'Close', { duration: 3000 })
+    }
+  }
+
+  onPaginatorChange(event: PageEvent) {
+    this.router.navigate([], {
+      queryParams: {
+        page: event.pageIndex,
+        perPage: event.pageSize
+      },
+      queryParamsHandling: 'merge',
+      relativeTo: this.route
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
 }

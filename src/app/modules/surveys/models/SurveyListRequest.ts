@@ -2,7 +2,7 @@ import { HttpParams } from "@angular/common/http";
 import { SurveySortOptions } from "../enums/SurveySortOptions";
 import { SurveyStatuses } from "../enums/SurveyStatuses";
 
-export interface SurveyListRequest extends HttpParams {
+export interface SurveyListRequest {
   page: number;
   perPage: number;
   search: string;

@@ -12,7 +12,7 @@ export class SurveyService {
   constructor(private http: HttpClient) { }
 
   getSurveys(data: SurveyListRequest): Promise<any> {
-    return lastValueFrom(this.http.get('v1/surveys', { params: data }));
+    return lastValueFrom(this.http.get('v1/surveys', { params: (data as unknown) as HttpParams }));
   }
 
   createSurvey(data: CreateSurveyRequest): Promise<any> {

@@ -1,4 +1,4 @@
-import { User } from "../../../core/models/User";
+import { User } from "./User";
 import { TokenResponse } from "./TokenResponse";
 
 export interface LoginResponse extends TokenResponse {

@@ -1,1 +1,48 @@
-<p>my-surveys works!</p>
+<app-survey-filter></app-survey-filter>
+<ng-container *ngIf="surveysPaginatedData">
+  <table mat-table [dataSource]="surveysPaginatedData.data">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.title }}</td>
+    </ng-container>
+    <ng-container matColumnDef="questions">
+      <th mat-header-cell *matHeaderCellDef>Questions</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.meta.questions_count }} Questions</td>
+    </ng-container>
+    <ng-container matColumnDef="time_limit">
+      <th mat-header-cell *matHeaderCellDef>Time Limit</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.time_limit }} minutes.</td>
+    </ng-container>
+    <ng-container matColumnDef="created_at">
+      <th mat-header-cell *matHeaderCellDef>Created At</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.created_at | date : 'dd/MM/yy, h:mm a' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="publish_at">
+      <th mat-header-cell *matHeaderCellDef>Pubilshed At</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.publish_at | date : 'dd/MM/yy, h:mm a' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+      <td mat-cell *matCellDef="let survey" style="text-align: center;">
+        <button type="button" mat-raised-button color="primary">Edit</button>
+        &nbsp;&nbsp;
+        <button type="button" mat-raised-button color="accent">Publish</button>
+        &nbsp;&nbsp;
+        <button type="button" mat-raised-button color="warn">Delete</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let survey; columns: displayColumns;"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="6">No data found.</td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [length]="surveysPaginatedData.meta.total"
+    [pageSize]="surveysPaginatedData.meta.per_page"
+    [pageSizeOptions]="[10, 25, 50]"
+    aria-label="Select page"
+    (page)="onPaginatorChange($event)"
+  ></mat-paginator>
+</ng-container>

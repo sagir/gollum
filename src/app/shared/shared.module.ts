@@ -8,9 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { SurveyFilterComponent } from './components/survey-filter/survey-filter.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 const Modules = [
   CommonModule,
@@ -24,12 +28,22 @@ const Modules = [
   HttpClientModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatTableModule
+  MatTableModule,
+  MatSelectModule,
+  MatIconModule,
+  MatPaginatorModule
 ];
 
+const Components = [
+  SurveyFilterComponent
+]
+
 @NgModule({
-  declarations: [],
+  declarations: [...Components],
   imports: [...Modules],
-  exports: [...Modules],
+  exports: [
+    ...Modules,
+    ...Components
+  ],
 })
 export class SharedModule {}

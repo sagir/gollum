@@ -1,0 +1,25 @@
+<form [formGroup]="form" fxLayout="row" fxLayoutGap="16px">
+  <div fxFlex="0 0 30%">
+    <mat-form-field fxFlex="1 0 0" appearance="outline">
+      <mat-label>Search</mat-label>
+      <input type="text" matInput required formControlName="search">
+    </mat-form-field>
+  </div>
+  <div fxFlex="1 0 0"></div>
+  <div fxFlex="0 0 25%">
+    <mat-form-field fxFlex="1 0 0" appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="0 0 25%">
+    <mat-form-field fxFlex="1 0 0" appearance="outline">
+      <mat-label>Sort by</mat-label>
+      <mat-select formControlName="sortBy">
+        <mat-option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
