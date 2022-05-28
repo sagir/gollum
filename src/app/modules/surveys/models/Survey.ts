@@ -1,5 +1,3 @@
-import { User } from "../../auth/models/User";
-
 export interface Survey {
   id: number;
   title: string;
