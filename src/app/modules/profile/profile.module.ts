@@ -9,6 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { CreateSurveyComponent } from './pages/create-survey/create-survey.component';
 import { SaveSurveyFormComponent } from './components/save-survey-form/save-survey-form.component';
 import { EditSurveyComponent } from './pages/edit-survey/edit-survey.component';
+import { SaveQuestionComponent } from './components/save-question/save-question.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { EditSurveyComponent } from './pages/edit-survey/edit-survey.component';
     TakenSurveysComponent,
     CreateSurveyComponent,
     SaveSurveyFormComponent,
-    EditSurveyComponent
+    EditSurveyComponent,
+    SaveQuestionComponent
   ],
   imports: [
     ProfileRoutingModule,

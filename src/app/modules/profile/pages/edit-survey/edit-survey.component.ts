@@ -5,6 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { SaveQuestionComponent } from '../../components/save-question/save-question.component';
 
 @Component({
   selector: 'app-edit-survey',
@@ -19,7 +21,8 @@ export class EditSurveyComponent implements OnInit {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
-    private surveyService: SurveyService
+    private surveyService: SurveyService,
+    private dialog: MatDialog
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -40,7 +43,17 @@ export class EditSurveyComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
+  }
 
+  addQuestion() {
+    const dialog = this.dialog.open(SaveQuestionComponent, {
+      width: '500px',
+      maxWidth: 'calc(100% - 32px)',
+      data: {
+        title: 'Create Question',
+        surveyId: this.survey.id
+      }
+    });
   }
 
 }

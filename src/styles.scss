@@ -50,3 +50,14 @@ body {
 .mat-table {
   width: 100%;
 }
+
+.mat-dialog-container {
+  background-color: white;
+  border: 2px solid #dfdfdf;
+  color: #424242;
+}
+
+button[disabled] {
+  background-color: #aaa !important;
+  color: #000 !important;
+}

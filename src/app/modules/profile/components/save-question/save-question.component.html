@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<div mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div fxLayout="row" style="margin-bottom: 10px;">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Text</mat-label>
+        <input type="text" matInput required formControlName="text">
+        <mat-error *ngIf="form.controls['text'].invalid">
+          <ng-container *ngIf="form.controls['text'].errors?.['required']">Text is required</ng-container>
+          <ng-container *ngIf="form.controls['text'].errors?.['minlength']">Text must have minimum 3 characters</ng-container>
+          <ng-container *ngIf="form.controls['text'].errors?.['maxlength']">Text must have maximum 255 characters</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" style="margin-bottom: 10px;">
+      <mat-form-field fxFlex="1 0 0" appearance="outline">
+        <mat-label>Question Type</mat-label>
+        <mat-select required formControlName="answerType">
+          <mat-option *ngFor="let type of questionTypes" [value]="type.value">{{ type.label }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['answerType'].invalid">
+          <ng-container *ngIf="form.controls['answerType'].errors?.['required']">Question type is required</ng-container>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="form.controls['answerType'].value !== 3">
+      <h4>Options</h4>
+      <hr>
+      <ul>
+        <li *ngFor="let option of options.controls; let i = index">
+          {{ option.value }}&nbsp;&nbsp;
+          <a href="javascript:void(0)" (click)="options.removeAt(i)">x</a>
+        </li>
+        <li *ngIf="form.controls['options'].invalid">
+          <mat-error>
+            <ng-container *ngIf="form.controls['options'].errors?.['required']">Option is required</ng-container>
+            <ng-container *ngIf="form.controls['options'].errors?.['minlength']">Please add at-least 2 options</ng-container>
+            <ng-container *ngIf="form.controls['options'].errors?.['maxlength']">Question must have maximum 4 options</ng-container>
+          </mat-error>
+        </li>
+      </ul>
+      <hr>
+      <div fxLayout="row" style="margin-bottom: 10px;" fxLayoutAlign="end end" *ngIf="options.controls.length < 4">
+        <div fxFlex="1 0 0" style="padding-right: 16px">
+          <mat-form-field fxFlex="1 0 0" appearance="outline">
+            <mat-label>Text</mat-label>
+            <input type="text" matInput [formControl]="optionText" (keydown)="onOptionTextEnter($event)">
+            <mat-error *ngIf="optionText.invalid">
+              <ng-container *ngIf="optionText.errors?.['required']">Text is required</ng-container>
+              <ng-container *ngIf="optionText.errors?.['minlength']">Text must have minimum 3 characters</ng-container>
+              <ng-container *ngIf="optionText.errors?.['maxlength']">Text must have maximum 255 characters</ng-container>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="0 0 0" style="padding-bottom: 22px;">
+          <button
+            mat-mini-fab color="accent"
+            type="button"
+            [disabled]="optionText.invalid"
+            (click)="addOption()"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <button type="submit" mat-raised-button color="primary">Save</button>
+    &nbsp;&nbsp;
+    <button type="reset" mat-raised-button color="primary" (click)="cancel()">Cancel</button>
+  </form>
+</div>

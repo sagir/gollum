@@ -80,6 +80,6 @@ export class AuthService {
   }
 
   refreshToken(token: string): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>('v1/refresh-token', { token });
+    return this.http.post<TokenResponse>('v1/auth/refresh-token', { token });
   }
 }
