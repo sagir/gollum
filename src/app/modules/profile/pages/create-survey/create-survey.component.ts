@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateSurveyRequest } from 'src/app/modules/surveys/models/CreateSurveyRequest';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-survey',
@@ -15,7 +16,8 @@ export class CreateSurveyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private surveyService: SurveyService
+    private surveyService: SurveyService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class CreateSurveyComponent implements OnInit {
     }
 
     try {
+      this.spinner.show('global');
       const survey = await this.surveyService.createSurvey(
         this.form.value as CreateSurveyRequest
       );
@@ -60,6 +63,8 @@ export class CreateSurveyComponent implements OnInit {
       this.snackBar.open('Something went wrong. Please try again.', 'Close', {
         duration: 3000,
       });
+    } finally {
+      this.spinner.hide('global');
     }
   }
 }
