@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { LoginRequest } from '../../models/LoginRequest';
 import { AuthService } from '../../services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +46,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.spinner.show('login');
     const res = await this.authService.login(this.form.value as LoginRequest);
+    this.spinner.hide('login');
 
     if (!res) {
       this.snackBar.open('Username or password didn\'t match.');
