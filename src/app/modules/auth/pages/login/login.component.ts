@@ -46,9 +46,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.spinner.show('login');
+    this.spinner.show('global');
     const res = await this.authService.login(this.form.value as LoginRequest);
-    this.spinner.hide('login');
+    this.spinner.hide('global');
 
     if (!res) {
       this.snackBar.open('Username or password didn\'t match.');
