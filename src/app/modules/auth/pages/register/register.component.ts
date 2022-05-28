@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegistrationRequest } from './../../models/RegistrationRequest';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +24,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +78,9 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
+    this.spinner.show('global');
     const res = await this.authService.register(this.form.value as RegistrationRequest);
+    this.spinner.hide('global');
 
     if (res) {
       this.snackBar.open('Registration successfull.', 'Close');
