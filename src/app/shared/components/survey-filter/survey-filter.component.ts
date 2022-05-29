@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -24,6 +25,8 @@ export class SurveyFilterComponent implements OnInit, OnDestroy {
   statuses: Array<{ label: string; value: SurveyStatuses }> = [];
   sortOptions: Array<{ label: string; value: SurveySortOptions }> = [];
 
+  @Input() hideStatus = false;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -31,18 +34,6 @@ export class SurveyFilterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.createSurveyFilterForm();
-
-    this.form.valueChanges
-      .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
-      .subscribe((value: SurveyFilterData) => {
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: value,
-          queryParamsHandling: 'merge',
-        });
-      });
-
     const statuses = Object.values(SurveyStatuses);
     Object.keys(SurveyStatuses).forEach((key, index) => {
       this.statuses.push({
@@ -58,6 +49,17 @@ export class SurveyFilterComponent implements OnInit, OnDestroy {
         value: sortOptions[index],
       });
     });
+
+    this.createSurveyFilterForm();
+    this.form.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe$), debounceTime(300))
+      .subscribe((value: SurveyFilterData) => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: value,
+          queryParamsHandling: 'merge',
+        });
+      });
   }
 
   private createSurveyFilterForm(): void {
@@ -66,7 +68,7 @@ export class SurveyFilterComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       search: queryParamMap.get('search') || null,
       sortBy: queryParamMap.get('sortBy') || SurveySortOptions.Latest,
-      status: 'all',
+      status: !this.hideStatus ? SurveyStatuses.Published : 'all',
     });
   }
 
