@@ -1,6 +1,6 @@
 export interface SurveyResultStore {
   id: number;
-  questions: QuestionResultStore;
+  questions: QuestionResultStore[];
 }
 
 export interface QuestionResultStore {

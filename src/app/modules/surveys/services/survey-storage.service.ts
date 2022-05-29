@@ -5,22 +5,32 @@ import { SurveyResultStore } from '../models/SurveyResultStore';
 import { LocalStorageService } from './../../../core/services/local-storage.service';
 
 @Injectable({
-  providedIn: 'any'
+  providedIn: 'root'
 })
 export class SurveyStorageService {
   timer$?: Observable<string>;
 
-  private questionsSubject$!: BehaviorSubject<SurveyResultStore | null>;
-  questionsObservable$!: Observable<SurveyResultStore | null>;
+  private questionsSubject$ = new BehaviorSubject<Question[]>([]);
+  questionsObservable$!: Observable<Question[]>;
+
+  private answersSubject$!: BehaviorSubject<SurveyResultStore | null>;
+  answersObservable$!: Observable<SurveyResultStore | null>;
 
   constructor(private storageService: LocalStorageService) {
     const survey = this.storageService.getItem<SurveyResultStore>('_survey');
-    this.questionsSubject$ = new BehaviorSubject(survey || null);
+    this.answersSubject$ = new BehaviorSubject(survey || null);
+    this.answersObservable$ = this.answersSubject$.asObservable();
+
     this.questionsObservable$ = this.questionsSubject$.asObservable();
   }
 
+  setQuestions(questions: Question[]): void {
+    // this.storageService.setItem('_questions', questions);
+    this.questionsSubject$.next(questions);
+  }
+
   startTimer(surveyId: number, timeLimit: number): Observable<string> {
-    const survey = this.questionsSubject$.value;
+    const survey = this.answersSubject$.value;
     let expandedTime = 0;
 
     if (survey && survey.id === surveyId) {

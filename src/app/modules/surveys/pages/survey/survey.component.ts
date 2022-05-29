@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +19,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
   timer$!: Observable<string>;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
@@ -38,8 +39,9 @@ export class SurveyComponent implements OnInit, OnDestroy {
     try {
       this.spinner.show('global');
       this.survey = await this.surveyService.getSurvey(id);
+      this.surveyStorageService.setQuestions(this.survey.questions);
       this.timer$ = this.surveyStorageService.startTimer(this.survey.id, this.survey.time_limit);
-      this.timer$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(console.log);
+      this.router.navigateByUrl(`/surveys/${id}/questions/${this.survey.questions[0].id}`)
     } catch (error: any) {
       this.snackBar.open(error.message || 'Something went wrong. Please try again.', 'Close', { duration: 3000 })
     } finally {
