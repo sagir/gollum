@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { interval, map, Observable, takeUntil, timer, BehaviorSubject } from 'rxjs';
 import { Question } from '../models/Question';
-import { SurveyResultStore } from '../models/SurveyResultStore';
+import { QuestionResultStore, SurveyResultStore } from '../models/SurveyResultStore';
 import { LocalStorageService } from './../../../core/services/local-storage.service';
 
 @Injectable({
@@ -27,7 +27,13 @@ export class SurveyStorageService {
       expandedTime = this.storageService.getItem<number>('_timer') || 0;
     }
 
-    this.storageService.setItem('_surveyId', surveyId);
+    // this.storageService.setItem('_surveyId', surveyId);
+
+    if (this.answersSubject$.value?.id !== surveyId) {
+      const surveyData: SurveyResultStore = { id: surveyId, questions: [] };
+      this.answersSubject$.next(surveyData);
+      this.storageService.setItem('_survey', surveyData);
+    }
 
     const date = new Date();
     const timerDate = new Date(
@@ -59,5 +65,12 @@ export class SurveyStorageService {
     const hours = Math.floor(totalSeconds / 60 / 60);
     const minutes = Math.floor(totalSeconds / 60) - (hours * 60);
     return `${hours}:${minutes}:${seconds}`;
+  }
+
+  addQuestionResult(data: QuestionResultStore): void {
+    const prevValue = this.answersSubject$.value as SurveyResultStore;
+    const newValue = { id: prevValue.id, questions: [...prevValue.questions, data] }
+    this.answersSubject$.next(newValue);
+    this.storageService.setItem('_survey', newValue);
   }
 }

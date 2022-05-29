@@ -57,7 +57,7 @@ body {
   color: #424242;
 }
 
-button[disabled] {
+button[disabled], a[disabled] {
   background-color: #aaa !important;
   color: #000 !important;
 }

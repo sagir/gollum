@@ -1,7 +1,7 @@
 import { Question } from "./Question";
 
 export interface QuestionResponse {
-  quesiton: Question,
+  question: Question,
   nextQuestionId?: number,
   previousQuestionId?: number;
 }

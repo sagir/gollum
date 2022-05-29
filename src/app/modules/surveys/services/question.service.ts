@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { QuestionDto } from '../models/QuestionDto';
 import { Question } from '../models/Question';
-import { QuestionResolver } from '../resolvers/question.resolver';
+import { QuestionResponse } from './../models/QuestionResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +17,9 @@ export class QuestionService {
     );
   }
 
-  getQuestion(surveyId: number | string, questionId: number | string): Promise<QuestionResolver> {
+  getQuestion(surveyId: number | string, questionId: number | string): Promise<QuestionResponse> {
     return lastValueFrom(
-      this.http.get<QuestionResolver>(`v1/surveys/${surveyId}/questions/${questionId}`)
+      this.http.get<QuestionResponse>(`v1/surveys/${surveyId}/questions/${questionId}`)
     );
   }
 }

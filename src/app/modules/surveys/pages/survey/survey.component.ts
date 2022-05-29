@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
 import { SurveyStorageService } from '../../services/survey-storage.service';
 
@@ -9,7 +9,8 @@ import { SurveyStorageService } from '../../services/survey-storage.service';
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.scss']
 })
-export class SurveyComponent implements OnInit {
+export class SurveyComponent implements OnInit, OnDestroy {
+  private readonly ngUnsubscribe$ = new Subject<void>();
 
   timer$?: Observable<string>;
   survey?: SurveyDetails;
@@ -23,13 +24,28 @@ export class SurveyComponent implements OnInit {
   ngOnInit(): void {
     this.survey = this.route.snapshot.data['survey'];
 
+
     if (this.survey) {
       this.timer$ = this.surveyStorageService.startTimer(this.survey.id, this.survey.time_limit);
+    }
 
+    this.redirect();
+    this.router.events
+      .pipe(takeUntil(this.ngUnsubscribe$), filter(event => event instanceof NavigationEnd))
+      .subscribe(event => this.redirect());
+  }
+
+  private redirect(): void {
+    if (this.survey) {
       if (!this.route.firstChild) {
         this.router.navigateByUrl(`surveys/${this.survey.id}/questions/${this.survey.questions[0].id}`)
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
 }
