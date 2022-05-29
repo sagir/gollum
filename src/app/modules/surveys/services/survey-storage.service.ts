@@ -23,37 +23,39 @@ export class SurveyStorageService {
     const survey = this.answersSubject$.value;
     let expandedTime = 0;
 
-    if (survey && survey.id === surveyId) {
+    if (survey && survey.id == surveyId) {
       expandedTime = this.storageService.getItem<number>('_timer') || 0;
     }
 
     // this.storageService.setItem('_surveyId', surveyId);
 
-    if (this.answersSubject$.value?.id !== surveyId) {
+    if (survey?.id != surveyId) {
       const surveyData: SurveyResultStore = { id: surveyId, questions: [] };
       this.answersSubject$.next(surveyData);
       this.storageService.setItem('_survey', surveyData);
     }
 
     const date = new Date();
-    const timerDate = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes() + timeLimit,
-      date.getSeconds() - expandedTime
-    );
+    date.setMinutes(date.getMinutes() + timeLimit - Math.floor(expandedTime / 60));
+    date.setSeconds(date.getSeconds() - (expandedTime % 60));
+    // const timerDate = new Date(
+    //   date.getFullYear(),
+    //   date.getMonth(),
+    //   date.getDate(),
+    //   date.getHours(),
+    //   date.getMinutes(),
+    //   date.getSeconds() + (timeLimit * 60) - expandedTime
+    // );
 
     this.timer$ = interval(1000).pipe(
-      takeUntil(timer(timerDate)),
+      takeUntil(timer(date)),
       map(value => {
-        // saving in localstorage in every second
+        // saving in localstorage in every 5 second
         if (value % 5 === 0) {
-          this.storageService.setItem('_timer', value);
+          this.storageService.setItem('_timer', value + expandedTime);
         }
 
-        return this.convertToTimeString(60 * timeLimit - value)
+        return this.convertToTimeString(60 * timeLimit - expandedTime - value)
       })
     );
 

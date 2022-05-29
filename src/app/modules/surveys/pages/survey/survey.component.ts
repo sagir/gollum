@@ -24,7 +24,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.survey = this.route.snapshot.data['survey'];
 
-
     if (this.survey) {
       this.timer$ = this.surveyStorageService.startTimer(this.survey.id, this.survey.time_limit);
     }
