@@ -10,9 +10,6 @@ import { LocalStorageService } from './../../../core/services/local-storage.serv
 export class SurveyStorageService {
   timer$?: Observable<string>;
 
-  private questionsSubject$ = new BehaviorSubject<Question[]>([]);
-  questionsObservable$!: Observable<Question[]>;
-
   private answersSubject$!: BehaviorSubject<SurveyResultStore | null>;
   answersObservable$!: Observable<SurveyResultStore | null>;
 
@@ -20,13 +17,6 @@ export class SurveyStorageService {
     const survey = this.storageService.getItem<SurveyResultStore>('_survey');
     this.answersSubject$ = new BehaviorSubject(survey || null);
     this.answersObservable$ = this.answersSubject$.asObservable();
-
-    this.questionsObservable$ = this.questionsSubject$.asObservable();
-  }
-
-  setQuestions(questions: Question[]): void {
-    // this.storageService.setItem('_questions', questions);
-    this.questionsSubject$.next(questions);
   }
 
   startTimer(surveyId: number, timeLimit: number): Observable<string> {

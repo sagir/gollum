@@ -25,7 +25,6 @@ export class SurveyResolver implements Resolve<SurveyDetails | undefined> {
     try {
       this.spinner.show('global');
       const survey = await this.surveyService.getSurvey(Number(route.params['id']));
-      this.surveStorageService.setQuestions(survey.questions);
       return survey;
     } catch (error: any) {
       this.snackBar.open(error.message || 'Could not load survey.', 'Close', { duration: 3000 });
