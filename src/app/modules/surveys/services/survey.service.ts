@@ -47,4 +47,10 @@ export class SurveyService {
       ],
     });
   }
+
+  updateSurvey(id: number, data: CreateSurveyRequest): Promise<any> {
+    return lastValueFrom(
+      this.http.put(`v1/surveys/${id}`, data)
+    );
+  }
 }

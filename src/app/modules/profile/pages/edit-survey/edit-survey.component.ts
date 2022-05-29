@@ -49,6 +49,20 @@ export class EditSurveyComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit(): Promise<void> {
+    if (this.form.invalid) {
+      this.snackBar.open('Invalid data', 'Close', { duration: 3000 });
+      return;
+    }
+
+    try {
+      this.spinner.show('global');
+      await this.surveyService.updateSurvey(this.survey.id, this.form.value);
+      this.snackBar.open('Survey updated successfully', 'Close', { duration: 3000 });
+    } catch (error) {
+      this.snackBar.open('Something went wrong. Please try again.', 'Close', { duration: 3000 });
+    } finally {
+      this.spinner.hide('global');
+    }
   }
 
   addQuestion() {
