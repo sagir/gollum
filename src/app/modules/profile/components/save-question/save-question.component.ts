@@ -23,11 +23,7 @@ export class SaveQuestionComponent implements OnInit, OnDestroy {
   private readonly ngUnsubscribe$ = new Subject<void>();
 
   form!: FormGroup;
-  optionText = new FormControl(null, [
-    Validators.required,
-    Validators.minLength(3),
-    Validators.maxLength(255),
-  ]);
+  optionText = new FormControl(null);
   questionTypes!: Array<{ label: string; value: QuesitonTypes }>;
 
   get options(): FormArray {

@@ -45,18 +45,13 @@
           <mat-form-field fxFlex="1 0 0" appearance="outline">
             <mat-label>Text</mat-label>
             <input type="text" matInput [formControl]="optionText" (keydown)="onOptionTextEnter($event)">
-            <mat-error *ngIf="optionText.invalid">
-              <ng-container *ngIf="optionText.errors?.['required']">Text is required</ng-container>
-              <ng-container *ngIf="optionText.errors?.['minlength']">Text must have minimum 3 characters</ng-container>
-              <ng-container *ngIf="optionText.errors?.['maxlength']">Text must have maximum 255 characters</ng-container>
-            </mat-error>
           </mat-form-field>
         </div>
         <div fxFlex="0 0 0" style="padding-bottom: 22px;">
           <button
             mat-mini-fab color="accent"
             type="button"
-            [disabled]="optionText.invalid"
+            [disabled]="!optionText.value || !optionText.value.length"
             (click)="addOption()"
           >
             <mat-icon>add</mat-icon>

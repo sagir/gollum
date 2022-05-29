@@ -12,6 +12,7 @@ import { Question } from 'src/app/modules/surveys/models/Question';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTable } from '@angular/material/table';
 import { QuesitonTypes } from 'src/app/modules/surveys/enums/QuestionTypes';
+import { SurveyStatuses } from 'src/app/modules/surveys/enums/SurveyStatuses';
 
 @Component({
   selector: 'app-edit-survey',
@@ -96,6 +97,20 @@ export class EditSurveyComponent implements OnInit, OnDestroy {
         this.survey.questions.push(question);
         this.table.renderRows();
       });
+  }
+
+  async publishSurvey(): Promise<void> {
+    try {
+      this.spinner.show('global');
+      await this.surveyService.publishSurvey(this.survey.id);
+      this.survey.publish_at = (new Date()).toISOString();
+      this.survey.status = SurveyStatuses.Published;
+      this.snackBar.open('Survey published successfully.', 'Close', { duration: 3000 });
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Something went wrong. Please try again', 'Close', { duration: 3000 });
+    } finally {
+      this.spinner.hide('global');
+    }
   }
 
   ngOnDestroy(): void {

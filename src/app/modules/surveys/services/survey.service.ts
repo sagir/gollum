@@ -39,6 +39,12 @@ export class SurveyService {
     );
   }
 
+  publishSurvey(id: string | number): Promise<void> {
+    return lastValueFrom(
+      this.http.patch<void>(`v1/surveys/${id}/publish`, {})
+    );
+  }
+
   createSurveyForm(survey?: Survey): FormGroup {
     return this.fb.group({
       title: [
