@@ -6,7 +6,7 @@
     </mat-form-field>
   </div>
   <div fxFlex="1 0 0"></div>
-  <div fxFlex="0 0 25%">
+  <div fxFlex="0 0 25%" *ngIf="!hideStatus">
     <mat-form-field fxFlex="1 0 0" appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select formControlName="status">

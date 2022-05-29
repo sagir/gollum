@@ -1,1 +1,65 @@
-<p>index works!</p>
+<app-survey-filter style="padding-top: 16px; display: block;" [hideStatus]="true"></app-survey-filter>
+<div
+  style="
+    position: relative;
+    min-height: calc(100vh - 300px);
+    background-color: #424242;
+  "
+>
+  <table mat-table [dataSource]="surveys">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let survey">{{ survey.title }}</td>
+    </ng-container>
+    <ng-container matColumnDef="questions">
+      <th mat-header-cell *matHeaderCellDef>Questions</th>
+      <td mat-cell *matCellDef="let survey">
+        {{ survey.meta.questions_count }} Questions
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="time_limit">
+      <th mat-header-cell *matHeaderCellDef>Time Limit</th>
+      <td mat-cell *matCellDef="let survey">
+        {{ survey.time_limit }} minutes.
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="total_taken">
+      <th mat-header-cell *matHeaderCellDef>Taken by</th>
+      <td mat-cell *matCellDef="let survey">
+        {{ survey.meta.total_taken || 0 }} People.
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">
+        Actions
+      </th>
+      <td mat-cell *matCellDef="let survey" style="text-align: center">
+        <button
+          type="button"
+          mat-raised-button
+          color="accent"
+        >
+          Take Survey
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let survey; columns: displayColumns"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="6">No data found.</td>
+    </tr>
+  </table>
+  <ngx-spinner
+    name="my-surveys"
+    type="ball-scale-multiple"
+    [fullScreen]="false"
+    #spinner
+  ></ngx-spinner>
+</div>
+
+<mat-paginator
+  [length]="paginatorData?.total || 0"
+  [pageSize]="paginatorData?.per_page || 10"
+  [pageSizeOptions]="[10, 25, 50]"
+  (page)="onPaginatorChange($event)"
+></mat-paginator>

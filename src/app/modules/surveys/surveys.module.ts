@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SurveysRoutingModule } from './surveys-routing.module';
 import { IndexComponent } from './pages/index/index.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -10,8 +11,8 @@ import { IndexComponent } from './pages/index/index.component';
     IndexComponent
   ],
   imports: [
-    CommonModule,
-    SurveysRoutingModule
+    SurveysRoutingModule,
+    SharedModule
   ]
 })
 export class SurveysModule { }
