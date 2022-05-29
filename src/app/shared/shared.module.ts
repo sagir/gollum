@@ -16,6 +16,7 @@ import { SurveyFilterComponent } from './components/survey-filter/survey-filter.
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const Modules = [
   CommonModule,
@@ -33,7 +34,8 @@ const Modules = [
   MatSelectModule,
   MatIconModule,
   MatPaginatorModule,
-  NgxSpinnerModule
+  NgxSpinnerModule,
+  MatDialogModule
 ];
 
 const Components = [

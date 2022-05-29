@@ -1,4 +1,4 @@
-import { User } from "../../auth/models/User";
+import { SurveyStatuses } from "../enums/SurveyStatuses";
 
 export interface Survey {
   id: number;
@@ -8,4 +8,5 @@ export interface Survey {
   publish_at: string;
   created_at: string;
   updated_at: string;
+  status: SurveyStatuses;
 }

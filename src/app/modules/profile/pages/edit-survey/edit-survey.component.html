@@ -1,0 +1,78 @@
+<form
+  style="padding-bottom: 16px"
+  *ngIf="survey && form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+>
+  <app-save-survey-form></app-save-survey-form>
+  <button
+    type="submit"
+    mat-raised-button color="primary"
+  >Update Survey</button>
+  &nbsp;&nbsp;
+  <button
+    type="button"
+    mat-raised-button color="accent"
+    *ngIf="survey.status === 'unpublished'"
+    (click)="publishSurvey()"
+  >Publish Survey</button>
+</form>
+<div style="padding-bottom: 16px;" *ngIf="survey">
+  <h1>Questions:</h1>
+  <hr>
+  <table mat-table [dataSource]="survey.questions" multiTemplateDataRows>
+    <ng-container matColumnDef="text">
+      <th mat-header-cell *matHeaderCellDef>Text</th>
+      <td mat-cell *matCellDef="let element">{{ element.text }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="answerType">
+      <th mat-header-cell *matHeaderCellDef>Question Type</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.answer_type == 1">Single Choice</ng-container>
+        <ng-container *ngIf="element.answer_type == 2">Multiple Choice</ng-container>
+        <ng-container *ngIf="element.answer_type == 3">Text</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center;">Actions</th>
+      <td mat-cell *matCellDef="let element" style="text-align: center;">
+        <button type="button" mat-raised-button color="primary" disabled>Edit</button>
+        &nbsp;&nbsp;
+        <button type="button" mat-raised-button color="warn" disabled>Delete</button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="questionDisplayColumns.length"
+      >
+        <div
+          class="question-options-details"
+          style="height: 0;"
+          [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <ul *ngFor="let option of element.options">
+            <li>{{ option.text }}</li>
+          </ul>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="questionDisplayColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: questionDisplayColumns;"
+        class="options-row"
+        [class.options-row-expanded]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element || element.answerType === 3 ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="question-options"></tr>
+  </table>
+  <hr>
+  <button
+    type="button"
+    mat-raised-button color="accent"
+    (click)="addQuestion()"
+  >Add New Question</button>
+</div>
