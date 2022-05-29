@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateSurveyRequest } from 'src/app/modules/surveys/models/CreateSurveyRequest';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-survey',
@@ -16,7 +17,8 @@ export class CreateSurveyComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private surveyService: SurveyService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,7 @@ export class CreateSurveyComponent implements OnInit {
       this.snackBar.open('Survey created successfully', 'Close', {
         duration: 3000,
       });
+      this.router.navigate(['profile', 'edit-survey', survey.id]);
     } catch (error) {
       this.snackBar.open('Something went wrong. Please try again.', 'Close', {
         duration: 3000,

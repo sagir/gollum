@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CreateSurveyRequest } from '../models/CreateSurveyRequest';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 import { SurveyListRequest } from '../models/SurveyListRequest';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Survey } from './../models/Survey';
+import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
+import { PaginatedResponse } from './../../../core/models/PaginatedResponse';
+import { SurveyListItem } from '../models/SurveyListItem';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +18,25 @@ export class SurveyService {
     private fb: FormBuilder
   ) { }
 
-  getSurveys(data: SurveyListRequest): Promise<any> {
-    return lastValueFrom(this.http.get('v1/surveys', { params: (data as unknown) as HttpParams }));
+  getSurveys(data: SurveyListRequest): Promise<PaginatedResponse<SurveyListItem>> {
+    return lastValueFrom(
+      this.http.get<PaginatedResponse<SurveyListItem>>('v1/surveys', { params: (data as unknown) as HttpParams })
+    );
   }
 
   createSurvey(data: CreateSurveyRequest): Promise<any> {
     return lastValueFrom(this.http.post<Survey>('v1/surveys', data))
   }
 
-  getSurvey(id: string | number): Promise<any> {
-    return lastValueFrom(this.http.get(`v1/surveys/${id}`));
+  getSurvey(id: string | number): Promise<SurveyDetails> {
+    return lastValueFrom(
+      this.http
+        .get<SurveyDetails>(`v1/surveys/${id}`)
+        .pipe(map(survey => {
+          survey.questions.forEach(question => question.answer_type = Number(question.answer_type));
+          return survey;
+        }))
+    );
   }
 
   createSurveyForm(survey?: Survey): FormGroup {
