@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
   Resolve,
-  RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { SurveyService } from 'src/app/modules/surveys/services/survey.service';
 import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
-import { SurveyStorageService } from './../services/survey-storage.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -17,8 +15,7 @@ export class SurveyResolver implements Resolve<SurveyDetails | undefined> {
   constructor(
     private snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
-    private surveyService: SurveyService,
-    private surveStorageService: SurveyStorageService
+    private surveyService: SurveyService
   ) {}
 
   async resolve(route: ActivatedRouteSnapshot): Promise<SurveyDetails | undefined> {

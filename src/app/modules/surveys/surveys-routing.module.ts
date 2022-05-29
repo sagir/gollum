@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path: 'questions/:id',
         component: QuesitonComponent,
-        resolve: { questionResponse: QuestionResolver }
+        resolve: { questionResponse: QuestionResolver },
       }
     ]
   }
