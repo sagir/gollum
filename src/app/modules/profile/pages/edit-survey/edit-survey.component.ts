@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,15 +7,21 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SaveQuestionComponent } from '../../components/save-question/save-question.component';
+import { filter, Subject, takeUntil } from 'rxjs';
+import { Question } from 'src/app/modules/surveys/models/Question';
 
 @Component({
   selector: 'app-edit-survey',
   templateUrl: './edit-survey.component.html',
   styleUrls: ['./edit-survey.component.scss']
 })
-export class EditSurveyComponent implements OnInit {
+export class EditSurveyComponent implements OnInit, OnDestroy {
+  private readonly ngUnsubscribe$ = new Subject<void>();
+
   form!: FormGroup;
   survey!: SurveyDetails;
+
+  questionDisplayColumns = ['text', 'actions', 'options'];
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +60,17 @@ export class EditSurveyComponent implements OnInit {
         surveyId: this.survey.id
       }
     });
+
+    dialog.afterClosed()
+      .pipe(takeUntil(this.ngUnsubscribe$), filter(Boolean))
+      .subscribe((question: Question) => {
+        this.survey.questions.push(question);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
   }
 
 }
