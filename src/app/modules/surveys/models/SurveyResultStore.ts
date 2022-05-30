@@ -5,6 +5,6 @@ export interface SurveyResultStore {
 
 export interface QuestionResultStore {
   id: number;
-  option?: number[];
+  options?: number[];
   answer?: string;
 }

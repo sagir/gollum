@@ -9,4 +9,6 @@ export interface SurveyListRequest {
   sortBy: SurveySortOptions;
   status: SurveyStatuses | null;
   user?: number;
+  takenBy?: number;
+  notTakenBy?: number;
 }

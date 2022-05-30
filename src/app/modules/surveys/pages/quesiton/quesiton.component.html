@@ -1,1 +1,53 @@
-<p>quesiton works!</p>
+<h3>{{ question.text }}</h3>
+<hr>
+<div style="padding: 10px 0;" fxLayout="column" [ngSwitch]="question.answer_type">
+  <ng-container *ngSwitchCase="questionTypes.SingleChoice">
+    <mat-radio-group (change)="onRadioChange($event)">
+      <mat-radio-button
+        *ngFor="let option of question.options"
+        [value]="option.id"
+        [checked]="option.id | includes: questionResult.options"
+      >
+        {{ option.text }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </ng-container>
+  <ng-container *ngSwitchCase="questionTypes.MultiChoice">
+    <mat-checkbox
+      *ngFor="let option of question.options"
+      value="{{option.id}}"
+      (change)="onCheckboxChange($event)"
+      [checked]="option.id | includes: questionResult.options"
+    >
+      {{ option.text }}
+    </mat-checkbox>
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <mat-form-field fxFlex="1 0 0" appearance="outline">
+      <mat-label>Answer:</mat-label>
+      <textarea matInput [(ngModel)]="questionResult.answer"></textarea>
+    </mat-form-field>
+  </ng-container>
+</div>
+<a
+  routerLink="/surveys/{{ question.survey_id }}/questions/{{ previousQuestionId }}"
+  mat-raised-button
+  color="accent"
+  [disabled]="!previousQuestionId"
+>Prev</a>
+&nbsp;&nbsp;
+<button
+  type="button"
+  mat-raised-button
+  color="primary"
+  *ngIf="nextQuestionId"
+  [disabled]="!nextable"
+  (click)="next()"
+>Next</button>
+<button
+  *ngIf="!nextQuestionId"
+  mat-raised-button
+  color="primary"
+  [disabled]="!nextable"
+  (click)="submit()"
+>Submit</button>
