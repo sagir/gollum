@@ -9,6 +9,7 @@ import { SurveyListItem } from './../../models/SurveyListItem';
 import { PaginatorData } from 'src/app/core/models/PaginatorData';
 import { PageEvent } from '@angular/material/paginator';
 import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/modules/auth/services/auth.service';
 
 @Component({
   selector: 'app-index',
@@ -20,6 +21,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   surveys!: SurveyListItem[];
   paginatorData!: PaginatorData;
+  userId = 0;
 
   displayColumns = ['title', 'questions', 'time_limit', 'total_taken', 'actions'];
 
@@ -28,13 +30,18 @@ export class IndexComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private spinner: NgxSpinnerService,
-    private surveyService: SurveyService
+    private surveyService: SurveyService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
     this.route.queryParams
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.loadSurveys());
+
+    this.authService.userObservable$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((user) => this.userId = user?.id || 0)
   }
 
   private async loadSurveys(): Promise<void> {
@@ -46,7 +53,8 @@ export class IndexComponent implements OnInit, OnDestroy {
         perPage: Number(queryParamMap.get('perPage') || 10) || 10,
         search: queryParamMap.get('search') || '',
         status: SurveyStatuses.Published,
-        sortBy: (queryParamMap.get('sortBy') || SurveySortOptions.Latest) as SurveySortOptions
+        sortBy: (queryParamMap.get('sortBy') || SurveySortOptions.Latest) as SurveySortOptions,
+        notTakenBy: this.userId
       });
       this.surveys = data;
       this.paginatorData = meta;

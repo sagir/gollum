@@ -75,4 +75,8 @@ export class SurveyStorageService {
     this.answersSubject$.next(newValue);
     this.storageService.setItem('_survey', newValue);
   }
+
+  getPendingSurvey(): SurveyResultStore | null {
+    return this.answersSubject$.value;
+  }
 }

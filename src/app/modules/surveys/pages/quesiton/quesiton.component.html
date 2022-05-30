@@ -48,4 +48,5 @@
   *ngIf="!nextQuestionId"
   mat-raised-button
   color="primary"
+  [disabled]="!nextable"
 >Submit</button>
