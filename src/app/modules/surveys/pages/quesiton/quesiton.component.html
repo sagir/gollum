@@ -6,7 +6,7 @@
       <mat-radio-button
         *ngFor="let option of question.options"
         [value]="option.id"
-        [checked]="option.id | includes: questionResult.option"
+        [checked]="option.id | includes: questionResult.options"
       >
         {{ option.text }}
       </mat-radio-button>
@@ -17,7 +17,7 @@
       *ngFor="let option of question.options"
       value="{{option.id}}"
       (change)="onCheckboxChange($event)"
-      [checked]="option.id | includes: questionResult.option"
+      [checked]="option.id | includes: questionResult.options"
     >
       {{ option.text }}
     </mat-checkbox>
@@ -49,4 +49,5 @@
   mat-raised-button
   color="primary"
   [disabled]="!nextable"
+  (click)="submit()"
 >Submit</button>

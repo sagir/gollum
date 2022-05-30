@@ -35,13 +35,13 @@ export class IndexComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.authService.userObservable$
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe((user) => this.userId = user?.id || 0);
+
     this.route.queryParams
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(() => this.loadSurveys());
-
-    this.authService.userObservable$
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((user) => this.userId = user?.id || 0)
   }
 
   private async loadSurveys(): Promise<void> {

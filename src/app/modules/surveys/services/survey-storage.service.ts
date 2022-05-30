@@ -71,9 +71,22 @@ export class SurveyStorageService {
 
   addQuestionResult(data: QuestionResultStore): void {
     const prevValue = this.answersSubject$.value as SurveyResultStore;
+    const index = prevValue.questions.findIndex(item => item.id === data.id)
+
+    if (index !== -1) {
+      console.log(index);
+      prevValue.questions.splice(index, 1);
+    }
+
     const newValue = { id: prevValue.id, questions: [...prevValue.questions, data] }
     this.answersSubject$.next(newValue);
     this.storageService.setItem('_survey', newValue);
+  }
+
+  clearPendingSurvey(): void {
+    this.answersSubject$.next(null);
+    this.storageService.removeItem('_survey');
+    this.storageService.removeItem('_timer');
   }
 
   getPendingSurvey(): SurveyResultStore | null {

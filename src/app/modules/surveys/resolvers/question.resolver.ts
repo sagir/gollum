@@ -50,7 +50,7 @@ export class QuestionResolver implements Resolve<QuestionResponse | undefined> {
       if (index > 0) {
         const prevAnswer = this.surveyResult?.questions[index - 1];
 
-        if (prevAnswer && (prevAnswer.option?.length || prevAnswer.answer)) {
+        if (prevAnswer && (prevAnswer.options?.length || prevAnswer.answer)) {
           response.nextQuestionId = survey.questions[index + 1]?.id;
           response.previousQuestionId = survey.questions[index - 1]?.id;
           return response;

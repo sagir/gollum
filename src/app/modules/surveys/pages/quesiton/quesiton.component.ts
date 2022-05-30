@@ -6,8 +6,9 @@ import { first, map, Subject, takeUntil } from 'rxjs';
 import { QuesitonTypes } from '../../enums/QuestionTypes';
 import { Question } from '../../models/Question';
 import { QuestionResponse } from '../../models/QuestionResponse';
-import { QuestionResultStore } from '../../models/SurveyResultStore';
+import { QuestionResultStore, SurveyResultStore } from '../../models/SurveyResultStore';
 import { SurveyStorageService } from '../../services/survey-storage.service';
+import { SurveyService } from '../../services/survey.service';
 
 @Component({
   selector: 'app-quesiton',
@@ -26,6 +27,7 @@ export class QuesitonComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private surveyService: SurveyService,
     private surveyStorageService: SurveyStorageService
   ) { }
 
@@ -45,31 +47,34 @@ export class QuesitonComponent implements OnInit, OnDestroy {
           }
 
           this.questionResult = { id: this.question.id };
-
           if (this.question.answer_type === this.questionTypes.Text) {
             this.questionResult.answer = '';
           } else {
-            this.questionResult.option = [];
+            this.questionResult.options = [];
           }
         });
     });
+
+    this.surveyStorageService.timer$?.subscribe(null, null, () => {
+      this.submit();
+    })
   }
 
   get nextable(): boolean {
-    return !!((this.questionResult.answer?.length || 0) >= 3 || this.questionResult.option?.length);
+    return !!((this.questionResult.answer?.length || 0) >= 3 || this.questionResult.options?.length);
   }
 
   onRadioChange($event: MatRadioChange): void {
-    this.questionResult.option = [Number($event.value)];
+    this.questionResult.options = [Number($event.value)];
   }
 
   onCheckboxChange($event: MatCheckboxChange): void {
     const value = Number($event.source.value);
 
     if ($event.checked) {
-      this.questionResult.option?.push(value);
+      this.questionResult.options?.push(value);
     } else {
-      this.questionResult.option = this.questionResult.option?.filter(item => item !== value);
+      this.questionResult.options = this.questionResult.options?.filter(item => item !== value);
     }
   }
 
@@ -78,6 +83,13 @@ export class QuesitonComponent implements OnInit, OnDestroy {
       this.surveyStorageService.addQuestionResult(this.questionResult);
       this.router.navigateByUrl(`surveys/${this.question.survey_id}/questions/${this.nextQuestionId}`);
     }
+  }
+
+  async submit(): Promise<void> {
+    if (this.nextable) {
+      this.surveyStorageService.addQuestionResult(this.questionResult);
+    }
+    await this.surveyService.takeSurvey(this.surveyStorageService.getPendingSurvey() as SurveyResultStore);
   }
 
   ngOnDestroy(): void {

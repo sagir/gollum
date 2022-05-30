@@ -8,6 +8,11 @@ import { Survey } from './../models/Survey';
 import { SurveyDetails } from 'src/app/modules/surveys/models/SurveyDetails';
 import { PaginatedResponse } from './../../../core/models/PaginatedResponse';
 import { SurveyListItem } from '../models/SurveyListItem';
+import { SurveyResultStore } from '../models/SurveyResultStore';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { SurveyStorageService } from './survey-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +20,11 @@ import { SurveyListItem } from '../models/SurveyListItem';
 export class SurveyService {
   constructor(
     private http: HttpClient,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private spinner: NgxSpinnerService,
+    private surveyStorageService: SurveyStorageService
   ) { }
 
   getSurveys(data: SurveyListRequest): Promise<PaginatedResponse<SurveyListItem>> {
@@ -70,5 +79,21 @@ export class SurveyService {
     return lastValueFrom(
       this.http.put(`v1/surveys/${id}`, data)
     );
+  }
+
+  async takeSurvey(data: SurveyResultStore): Promise<void> {
+    try {
+      this.spinner.show('global');
+      await lastValueFrom(
+        this.http.post<void>(`v1/surveys/${data.id}/take-survey`, { answers: data.questions })
+      );
+      this.snackBar.open('Survey created successfully.', 'Close', { duration: 3000 });
+      this.surveyStorageService.clearPendingSurvey();
+      this.router.navigateByUrl('/surveys');
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Something went wrong.', 'Close', { duration: 3000 });
+    } finally {
+      this.spinner.hide('global');
+    }
   }
 }
