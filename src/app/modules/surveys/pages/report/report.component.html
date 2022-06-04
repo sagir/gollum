@@ -5,7 +5,53 @@
     <p fxFlex="0 0 240px" style="text-align: right; min-width: 240px;">Taken By: {{ takenBy }}</p>
   </div>
   <hr>
-  <table mat-table [dataSource]="survey.questions">
+  <table mat-table [dataSource]="survey.questions" multiTemplateDataRows>
+    <ng-container matColumnDef="text">
+      <th mat-header-cell *matHeaderCellDef>Text</th>
+      <td mat-cell *matCellDef="let element">{{ element.text }}</td>
+    </ng-container>
 
+    <ng-container matColumnDef="answerType">
+      <th mat-header-cell *matHeaderCellDef>Question Type</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.answer_type == 1">Single Choice</ng-container>
+        <ng-container *ngIf="element.answer_type == 2">Multiple Choice</ng-container>
+        <ng-container *ngIf="element.answer_type == 3">Text</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="questionDisplayColumns.length"
+      >
+        <div
+          class="question-options-details"
+          style="height: 0;"
+          [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <ul *ngIf="element.answer_type != 3">
+            <li *ngFor="let option of element.options">
+              {{ option.text }}
+              <strong>Choosen by ({{ option.chosen_by }})</strong>
+            </li>
+          </ul>
+          <ul *ngIf="element.answer_type == 3">
+            <li *ngFor="let answer of element.answers">
+              {{ answer.answer }}<br>
+              {{ answer.user.name }}
+            </li>
+          </ul>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="questionDisplayColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: questionDisplayColumns;"
+        class="options-row"
+        [class.options-row-expanded]="expandedElement === element"
+        (click)="expand(element)">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="question-options"></tr>
   </table>
 </div>
