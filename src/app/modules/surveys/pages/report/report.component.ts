@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ReportComponent implements OnInit {
   survey?: SurveyDetails;
+  takenBy = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,11 +25,26 @@ export class ReportComponent implements OnInit {
     try {
       this.spinner.show('global');
       this.survey = await this.surveyService.getSurveyReport(this.route.snapshot.params['id']);
+      this.setTakenBy();
     } catch (error: any) {
       this.snackBar.open(error.message || 'Something went wrong. Please try again later.', 'Close');
     } finally {
       this.spinner.hide('global');
     }
+  }
+
+  private setTakenBy(): void {
+    const takenByUsers: number[] = [0];
+
+    this.survey?.questions.forEach(question => {
+      question.answers?.forEach(answer => {
+        if (!takenByUsers.includes(answer.user_id)) {
+          takenByUsers.push(answer.user_id);
+        }
+      });
+    });
+
+    this.takenBy = Math.max(...takenByUsers);
   }
 
 }

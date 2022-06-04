@@ -1,1 +1,11 @@
-<p>report works!</p>
+<div style="padding: 16px 0" *ngIf="survey">
+  <h1>{{ survey.title }}</h1>
+  <div fxLayout="row" fxLayoutAlign="end end">
+    <p fxFlex="1 0 0">{{ survey.description || 'No description.' }}</p>
+    <p fxFlex="0 0 240px" style="text-align: right; min-width: 240px;">Taken By: {{ takenBy }}</p>
+  </div>
+  <hr>
+  <table mat-table [dataSource]="survey.questions">
+
+  </table>
+</div>
