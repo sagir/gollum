@@ -4,9 +4,9 @@
   [tabPanel]="tabPanel"
   style="margin: 16px 0;"
 >
-  <a mat-tab-link routerLink="my-surveys" routerLinkActive="mat-accent">My Surveys</a>
-  <a mat-tab-link routerLink="create-survey" routerLinkActive="mat-accent">Create Survey</a>
-  <a mat-tab-link routerLink="taken-surveys" routerLinkActive="mat-accent">Taken Surveys</a>
+  <a mat-tab-link routerLink="my-surveys" routerLinkActive="mat-accent" [routerLinkActiveOptions]="{ exact: true }">My Surveys</a>
+  <a mat-tab-link routerLink="my-surveys/create" routerLinkActive="mat-accent" [routerLinkActiveOptions]="{ exact: true }">Create Survey</a>
+  <a mat-tab-link routerLink="taken-surveys" routerLinkActive="mat-accent" [routerLinkActiveOptions]="{ exact: true }">Taken Surveys</a>
 </nav>
 <mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
