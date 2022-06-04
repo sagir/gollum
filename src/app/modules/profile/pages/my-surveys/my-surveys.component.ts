@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/modules/auth/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,12 +38,12 @@ export class MySurveysComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((user) => (this.userId = user?.id));
 
-    this.route.queryParams.subscribe((params) => {
-      this.loadMySurveys(params);
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
+      this.loadMySurveys();
     });
   }
 
-  private async loadMySurveys(params: Params): Promise<void> {
+  private async loadMySurveys(): Promise<void> {
     if (!this.userId) {
       this.snackBar.open('Unable to load user surveys', 'Close', {
         duration: 3000,
