@@ -96,4 +96,10 @@ export class SurveyService {
       this.spinner.hide('global');
     }
   }
+
+  getSurveyReport(id: number | string): Promise<SurveyDetails> {
+    return lastValueFrom(
+      this.http.get<SurveyDetails>(`v1/surveys/${id}/report`)
+    );
+  }
 }

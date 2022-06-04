@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { IncludesPipe } from './pipes/includes.pipe';
+import { ReportComponent } from './pages/report/report.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { IncludesPipe } from './pipes/includes.pipe';
     IndexComponent,
     SurveyComponent,
     QuesitonComponent,
-    IncludesPipe
+    IncludesPipe,
+    ReportComponent
   ],
   imports: [
     SurveysRoutingModule,

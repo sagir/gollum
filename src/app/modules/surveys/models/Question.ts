@@ -1,4 +1,5 @@
 import { QuesitonTypes } from "../enums/QuestionTypes";
+import { Answer } from "./Answer";
 import { Option } from "./Option";
 
 export interface Question {
@@ -9,4 +10,5 @@ export interface Question {
   created_at: string;
   updated_at: string;
   options: Option[];
+  answers?: Answer[];
 }
