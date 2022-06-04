@@ -13,6 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { QuestionService } from 'src/app/modules/surveys/services/question.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { QuestionDto } from 'src/app/modules/surveys/models/QuestionDto';
+import { Question } from 'src/app/modules/surveys/models/Question';
 
 @Component({
   selector: 'app-save-question',
@@ -35,6 +36,7 @@ export class SaveQuestionComponent implements OnInit, OnDestroy {
     public data: {
       title: string;
       surveyId: number;
+      question?: Question;
     },
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -57,25 +59,30 @@ export class SaveQuestionComponent implements OnInit, OnDestroy {
   private createForm() {
     this.form = this.fb.group({
       text: [
-        null,
+        this.data.question?.text || null,
         [
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(255),
         ],
       ],
-      answerType: [QuesitonTypes.MultiChoice, [Validators.required]],
+      answerType: [this.data.question?.answer_type || QuesitonTypes.MultiChoice, [Validators.required]],
       options: this.fb.array([]),
     });
 
-    this.updateOptionValidators(QuesitonTypes.MultiChoice);
+    this.data.question?.options.forEach(option => {
+      const options = this.form.controls['options'] as FormArray
+      options.push(new FormControl(option.text));
+    });
+
+    this.updateOptionValidators(this.data.question?.answer_type || QuesitonTypes.MultiChoice);
     this.form.controls['answerType'].valueChanges
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((value: QuesitonTypes) => this.updateOptionValidators(value));
   }
 
   private updateOptionValidators(questionType: QuesitonTypes): void {
-    if (questionType !== QuesitonTypes.Text) {
+    if (questionType != QuesitonTypes.Text) {
       this.options.setValidators([Validators.required, Validators.minLength(2), Validators.maxLength(4)]);
       this.options.controls.forEach((option) => {
         option.setValidators([Validators.required, Validators.minLength(1), Validators.maxLength(255)]);
@@ -117,7 +124,14 @@ export class SaveQuestionComponent implements OnInit, OnDestroy {
 
     try {
       this.spinner.show('global');
-      const res = await this.questionService.createQuestion(this.data.surveyId, this.form.value as QuestionDto);
+      let res: Question;
+      if (this.data.question?.id) {
+        res = await this.questionService.updateQuestion(this.data.surveyId, this.data.question.id, this.form.value as QuestionDto);
+        this.snackBar.open('Question updated successfully', 'Close', { duration: 3000 });
+      } else {
+        res = await this.questionService.createQuestion(this.data.surveyId, this.form.value as QuestionDto);
+        this.snackBar.open('Question created successfully', 'Close', { duration: 3000 });
+      }
       this.dialogRef.close(res);
     } catch (error) {
       this.snackBar.open('Something went wrong. Please try again.');

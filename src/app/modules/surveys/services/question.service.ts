@@ -17,6 +17,12 @@ export class QuestionService {
     );
   }
 
+  updateQuestion(surveyId: number, quesitonId: number, data: QuestionDto): Promise<Question> {
+    return lastValueFrom(
+      this.http.put<Question>(`v1/surveys/${surveyId}/questions/${quesitonId}`, data)
+    );
+  }
+
   getQuestion(surveyId: number | string, questionId: number | string): Promise<QuestionResponse> {
     return lastValueFrom(
       this.http.get<QuestionResponse>(`v1/surveys/${surveyId}/questions/${questionId}`)

@@ -93,6 +93,27 @@ export class EditSurveyComponent implements OnInit, OnDestroy {
       });
   }
 
+  editQuestion($event: Event, question: Question) {
+    $event.stopPropagation();
+    const dialog = this.dialog.open(SaveQuestionComponent, {
+      width: '500px',
+      maxWidth: 'calc(100% - 32px)',
+      data: {
+        title: 'Update Question',
+        surveyId: this.survey.id,
+        question
+      }
+    });
+
+    dialog.afterClosed()
+      .pipe(takeUntil(this.ngUnsubscribe$), filter(Boolean))
+      .subscribe((question: Question) => {
+        const index = this.survey.questions.findIndex(({ id }) => id === question.id);
+        this.survey.questions.splice(index, 1, question);
+        this.table.renderRows();
+      });
+  }
+
   async publishSurvey(): Promise<void> {
     try {
       this.spinner.show('global');
