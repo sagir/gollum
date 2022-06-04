@@ -42,7 +42,6 @@ export class TakenSurveysComponent implements OnInit, OnDestroy {
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(() => {
       this.loadTakenSurveys();
     });
-
   }
 
   async loadTakenSurveys(): Promise<void> {
@@ -60,7 +59,7 @@ export class TakenSurveysComponent implements OnInit, OnDestroy {
         page: Number(queryParamMap.get('page') || 0) || 1,
         perPage: Number(queryParamMap.get('perPage') || 10) || 10,
         search: queryParamMap.get('search') || '',
-        status: (queryParamMap.get('status') || 'all') as SurveyStatuses,
+        status: 'all' as SurveyStatuses,
         sortBy: (queryParamMap.get('sortBy') || SurveySortOptions.Latest) as SurveySortOptions,
         takenBy: this.userId
       });
