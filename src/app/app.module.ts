@@ -10,12 +10,14 @@ import { HeaderComponent } from './layout/header/header.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './core/interceptors/request.interceptor';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+import { PendingSurveyConfirmationComponent } from './components/pending-survey-confirmation/pending-survey-confirmation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
-    HeaderComponent
+    HeaderComponent,
+    PendingSurveyConfirmationComponent
   ],
   imports: [
     BrowserModule,
