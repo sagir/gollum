@@ -5,8 +5,6 @@ import { ProfileContainerComponent } from './layout/profile-container/profile-co
 import { MySurveysComponent } from './pages/my-surveys/my-surveys.component';
 import { TakenSurveysComponent } from './pages/taken-surveys/taken-surveys.component';
 import { EditSurveyComponent } from './pages/edit-survey/edit-survey.component';
-import { TakenSurveyComponent } from './pages/taken-survey/taken-survey.component';
-import { MySurveyComponent } from './pages/my-survey/my-survey.component';
 
 const routes: Routes = [
   {
@@ -25,32 +23,14 @@ const routes: Routes = [
             component: CreateSurveyComponent
           },
           {
-            path: ':id',
-            children: [
-              {
-                path: '',
-                component: MySurveyComponent
-              },
-              {
-                path: 'edit',
-                component: EditSurveyComponent
-              }
-            ]
-          },
+            path: ':id/edit',
+            component: EditSurveyComponent
+          }
         ]
       },
       {
         path: 'taken-surveys',
-        children: [
-          {
-            path: '',
-            component: TakenSurveysComponent
-          },
-          {
-            path: ':id',
-            component: TakenSurveyComponent
-          }
-        ]
+        component: TakenSurveysComponent
       },
       { path: '', redirectTo: 'my-surveys' },
     ]

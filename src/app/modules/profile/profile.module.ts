@@ -9,9 +9,6 @@ import { CreateSurveyComponent } from './pages/create-survey/create-survey.compo
 import { SaveSurveyFormComponent } from './components/save-survey-form/save-survey-form.component';
 import { EditSurveyComponent } from './pages/edit-survey/edit-survey.component';
 import { SaveQuestionComponent } from './components/save-question/save-question.component';
-import { TakenSurveyComponent } from './pages/taken-survey/taken-survey.component';
-import { MySurveyComponent } from './pages/my-survey/my-survey.component';
-
 
 @NgModule({
   declarations: [
@@ -21,9 +18,7 @@ import { MySurveyComponent } from './pages/my-survey/my-survey.component';
     CreateSurveyComponent,
     SaveSurveyFormComponent,
     EditSurveyComponent,
-    SaveQuestionComponent,
-    TakenSurveyComponent,
-    MySurveyComponent
+    SaveQuestionComponent
   ],
   imports: [
     ProfileRoutingModule,
