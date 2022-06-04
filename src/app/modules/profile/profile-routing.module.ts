@@ -11,23 +11,28 @@ const routes: Routes = [
     path: '',
     component: ProfileContainerComponent,
     children: [
-      { path: '', redirectTo: 'my-surveys' },
       {
         path: 'my-surveys',
-        component: MySurveysComponent
-      },
-      {
-        path: 'create-survey',
-        component: CreateSurveyComponent
-      },
-      {
-        path: 'edit-survey/:id',
-        component: EditSurveyComponent
+        children: [
+          {
+            path: '',
+            component: MySurveysComponent
+          },
+          {
+            path: 'create',
+            component: CreateSurveyComponent
+          },
+          {
+            path: ':id/edit',
+            component: EditSurveyComponent
+          }
+        ]
       },
       {
         path: 'taken-surveys',
         component: TakenSurveysComponent
-      }
+      },
+      { path: '', redirectTo: 'my-surveys' },
     ]
   },
 ];

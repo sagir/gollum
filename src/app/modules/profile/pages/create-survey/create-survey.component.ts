@@ -39,7 +39,7 @@ export class CreateSurveyComponent implements OnInit {
       this.snackBar.open('Survey created successfully', 'Close', {
         duration: 3000,
       });
-      this.router.navigate(['profile', 'edit-survey', survey.id]);
+      this.router.navigate(['profile', 'my-surveys', survey.id, 'edit']);
     } catch (error) {
       this.snackBar.open('Something went wrong. Please try again.', 'Close', {
         duration: 3000,
