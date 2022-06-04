@@ -120,4 +120,21 @@ export class EditSurveyComponent implements OnInit, OnDestroy {
     }
   }
 
+  async deleteQuestion($event: Event, questionId: number): Promise<void> {
+    $event.stopPropagation();
+
+    try {
+      this.spinner.show('global');
+      await this.surveyService.deleteQuestion(this.survey.id, questionId);
+      const questionIndex = this.survey.questions.findIndex(question => question.id == questionId);
+      this.survey.questions.splice(questionIndex, 1); // removing deleted question
+      this.snackBar.open('Question deleted successfully.', 'Close', { duration: 3000 });
+      this.table.renderRows();
+    } catch (error: any) {
+      this.snackBar.open(error.message || 'Something went wrong. Please try again.');
+    } finally {
+      this.spinner.hide('global');
+    }
+  }
+
 }

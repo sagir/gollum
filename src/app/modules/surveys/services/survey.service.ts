@@ -102,4 +102,10 @@ export class SurveyService {
       this.http.get<SurveyDetails>(`v1/surveys/${id}/report`)
     );
   }
+
+  deleteQuestion(surveyId: number | string, questionId: number | string): Promise<void> {
+    return lastValueFrom(
+      this.http.delete<void>(`v1/surveys/${surveyId}/questions/${questionId}`)
+    );
+  }
 }
